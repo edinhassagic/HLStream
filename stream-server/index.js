@@ -285,7 +285,6 @@ app.get("/channels/:channelId", checkAuth, (req, res) => {
   const userChannels = user.channels;
 
   if (!userChannels.includes(parseInt(channelId))) return res.status(403).end();
-
   return res.status(200).json(channel);
 });
 
