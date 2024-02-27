@@ -2,9 +2,9 @@ import axios from "axios";
 
 export const login = async ({username, password}) => {
   try {
-    const response = await axios.get('http://localhost:4000/login', null, {
+    const response = await axios.get('http://localhost:4000/login', {
       headers: {
-        Authorization: `Basic ${btoa(`${username}:${password}`)}`, // Encode credentials in Base64
+        Authorization: `Basic ${btoa(`${username}:${password}`)}`, 
       },
     });
 
