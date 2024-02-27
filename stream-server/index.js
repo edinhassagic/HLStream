@@ -218,7 +218,7 @@ const checkAuth = async (req, res, next) => {
 app.get("/login", (req, res) => {
   const { authorization } = req.headers;
 
-  if (!authorization) return res.status(401).end();
+  if (!authorization) return res.status(401).json({ message: 'Authorization header is missing' });
 
   const [type, credentials] = authorization.split(" ");
 
