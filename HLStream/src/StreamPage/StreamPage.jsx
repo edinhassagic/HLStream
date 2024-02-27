@@ -31,26 +31,31 @@ const ChannelBox = ({ id, name, available, img }) => {
 
     console.log(videoData);
   };
+
+  
+
   return (
     <div
+      className={styles.channel_container}
       disabled={available}
       key={id}
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        padding: "10px",
-        margin: "10px",
-        textAlign: "center",
-        cursor: "pointer",
-      }}
       onClick={() => {
         if (available) { // Provjera je li available true prije izvršavanja funkcije fetchVideoStream
           fetchVideoStream(id);
         }
       }}
     >
-      <img src={img} alt={name} style={{ width: "100%" }} />
-      <p>{name}</p>
+      <img className={!available ? (styles.img_blured) : ""} src={img} alt={name} style={{ width: "100%" }} />
+      {available ?
+        (
+          <p>{name}</p>
+        ):(
+          <div>
+            <button> DOKUPITE </button>
+          </div>
+        )
+      }
+      
     </div>
   );
 };
