@@ -16,9 +16,8 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <p className={styles.user}>{localStorage.getItem("user")}</p>
-      <button className={styles.logout_btn} onClick={handleLogout}>
-        {" "}
-        LOGOUT{" "}
+      <button onClick={handleLogout} className={styles.logout_btn}>
+        LOGOUT
       </button>
     </div>
   );
@@ -27,24 +26,28 @@ const Header = () => {
 const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
   return (
     <div
+      className={styles.channel_container}
+      disabled={available}
       key={id}
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        padding: "10px",
-        margin: "10px",
-        textAlign: "center",
-        cursor: available ? "pointer" : "not-allowed",
-        opacity: available ? 1 : 0.5,
-      }}
       onClick={() => {
         if (available) {
           onSelectChannel(id);
         }
       }}
     >
-      <img src={img} alt={name} style={{ width: "100%" }} />
-      <p>{name}</p>
+      <img
+        className={!available ? styles.img_blured : ""}
+        src={img}
+        alt={name}
+        style={{ width: "100%" }}
+      />
+      {available ? (
+        <p>{name}</p>
+      ) : (
+        <div>
+          <button> DOKUPITE {name} </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -90,7 +93,7 @@ const StreamPage = () => {
       const fetchData = async () => {
         try {
           const response = await getContent();
-          const firstAvailableVideo = response.find(video => video.available);
+          const firstAvailableVideo = response.find((video) => video.available);
           if (firstAvailableVideo) {
             fetchVideoStream(firstAvailableVideo.id);
           }
