@@ -56,7 +56,7 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
 const ListOfChannels = ({ channels, onSelectChannel }) => {
   return (
     <div className={styles.videolist}>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" , justifyContent: "center" }}>
         {channels.map((channel) => (
           <div key={channel.id}>
             <ChannelBox {...channel} onSelectChannel={onSelectChannel} />
@@ -78,6 +78,7 @@ const MainStream = ({ channelUrl }) => {
             playing={true}
             controls={true}
             url={channelUrl}
+            muted={true}
           />
         </>
       )}
