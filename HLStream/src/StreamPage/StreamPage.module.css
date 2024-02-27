@@ -1,26 +1,41 @@
-.layout{
-
-
-    height: 100vh;
-    width: 100%;
-    background-color: goldenrod;
+.layout {
+  height: 100vh;
+  width: 100%;
+  background-color: goldenrod;
 }
-
 
 .header {
-
-    width: 100%;
-    height: 10%;
-    background-color: wheat;
+  width: 100%;
+  height: 10%;
+  background-color: wheat;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
 }
 
-
-.stream{
-
-    height: 60%;
-    background-color: white;
+.header .user {
+  font-weight: bold;
 }
 
-.listOfChannels{
-    flex: 1;
+.header .logout_btn {
+  background-color: goldenrod;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+
+.header .logout_btn:hover {
+  background-color: rgb(186, 141, 29);
+}
+
+.stream {
+  height: 60%;
+  background-color: white;
+}
+
+.listOfChannels {
+  flex: 1;
 }
