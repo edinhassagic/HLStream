@@ -1,32 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StreamPage.module.css";
-import { useState } from "react";
 import { getContent, getContentById } from "../api/api";
-
+import { useNavigate } from "react-router-dom";
+import ReactPlayer from 'react-player'
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("user", "");
+    navigate("/");
+  };
+
   return (
     <div className={styles.header}>
       <p className={styles.user}>{localStorage.getItem("user")}</p>
-      <button className={styles.logout_btn}> LOGOUT </button>
+      <button className={styles.logout_btn} onClick={handleLogout}>
+        {" "}
+        LOGOUT{" "}
+      </button>
     </div>
   );
 };
 
-const ChannelBox = ({ id, name, available, img }) => {
-  const [videoData, setVideoData] = useState([]);
-
-  const fetchVideoStream = (id) => {
-    const fetchStreamById = async (id) => {
-      const response = await getContentById(id);
-      setVideoData(response);
-    };
-    fetchStreamById(id);
-
-    console.log(videoData);
-  };
+const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
   return (
     <div
-      disabled={available}
+     
       key={id}
       style={{
         border: "1px solid #ccc",
@@ -34,11 +34,13 @@ const ChannelBox = ({ id, name, available, img }) => {
         padding: "10px",
         margin: "10px",
         textAlign: "center",
-        cursor: "pointer",
+        cursor: available ? "pointer" : "not-allowed",
+        opacity: available ? 1 : 0.5,
+        
       }}
       onClick={() => {
-        if (available) { // Provjera je li available true prije izvršavanja funkcije fetchVideoStream
-          fetchVideoStream(id);
+        if (available) {
+          onSelectChannel(id);
         }
       }}
     >
@@ -48,13 +50,13 @@ const ChannelBox = ({ id, name, available, img }) => {
   );
 };
 
-const ListOfChannels = ({ channels }) => {
+const ListOfChannels = ({ channels, onSelectChannel }) => {
   return (
     <div className={styles.videolist}>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {channels.map((channel, index) => (
-          <div key={index}>
-            <ChannelBox {...channel} />
+        {channels.map((channel) => (
+          <div key={channel.id}>
+            <ChannelBox {...channel} onSelectChannel={onSelectChannel} />
           </div>
         ))}
       </div>
@@ -62,16 +64,23 @@ const ListOfChannels = ({ channels }) => {
   );
 };
 
-const MainStream = () => {
+const MainStream = ({ channelUrl }) => {
   return (
-    <div className={styles.videolist}>
-      <p>Main Stream</p>
+    <div >
+      {channelUrl && (
+        <>
+          <p>Main Stream</p>
+          
+          <ReactPlayer width="100%" playing={true} controls={true}  url={channelUrl} />
+        </>
+      )}
     </div>
   );
 };
 
 const StreamPage = () => {
   const [channels, setChannels] = useState([]);
+  const [selectedChannelUrl, setSelectedChannelUrl] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -79,7 +88,6 @@ const StreamPage = () => {
         try {
           const response = await getContent();
           setChannels(response);
-          console.log(response);
         } catch (error) {
           console.error("Error fetching data:", error.message);
         }
@@ -89,14 +97,26 @@ const StreamPage = () => {
     }
   }, []);
 
+  const fetchVideoStream = async (id) => {
+    try {
+      const response = await getContentById(id);
+      setSelectedChannelUrl(response.url);
+    } catch (error) {
+      console.error("Error fetching video stream:", error.message);
+    }
+  };
+
   return (
     <div className={styles.layout}>
       <Header />
       <div className={styles.stream}>
-        <MainStream />
+        <MainStream channelUrl={selectedChannelUrl} />
       </div>
       <div className={styles.listOfChannels}>
-        <ListOfChannels channels={channels} />
+        <ListOfChannels
+          channels={channels}
+          onSelectChannel={fetchVideoStream}
+        />
       </div>
     </div>
   );
