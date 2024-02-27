@@ -23,24 +23,24 @@ export const login = async ({ username, password }) => {
 export const getContent = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get("https://localhost:4000/channels", {
+    const response = await axios.get("http://localhost:4000/channels",  {
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
 
-        Authorization: `Bearer ${token}`,
       },
     });
 
-    return response.data;
+    return response.data.channels;
   } catch (error) {
-    console.error("Error during login:", error);
+    console.error("Error during getting data:", error);
   }
 };
 
 export const getContentById = async (id) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`https://localhost:4000/channels:${id}`, {
+    const response = await axios.get(`https://localhost:4000/channels/:${id}`, {
       headers: {
         "Content-Type": "application/json",
 
