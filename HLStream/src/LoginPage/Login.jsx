@@ -5,14 +5,14 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const [data, setData] = useState()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await login({username, password})
-
-
+      setData(response)
+      console.log(response)
     } catch (error) {
       setError('Invalid username or password');
       console.error('Error during login:', error);
