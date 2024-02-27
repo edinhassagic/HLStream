@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./StreamPage.module.css";
 import { useState } from "react";
 import { getContent } from "../api/api";
+
 const Header = () => {
   return (
     <div className={styles.header}>
@@ -14,13 +15,18 @@ const Header = () => {
 const ListOfChannels = () => {
   return (
     <div className={styles.videolist}>
-      <ReactPlayer url='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
-      <ReactPlayer url='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
-      <ReactPlayer url='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
+      <p>lista</p>
     </div>
-  )
-}
+  );
+};
 
+const MainStream = () => {
+  return (
+    <div className={styles.videolist}>
+      <p>Main Stream</p>
+    </div>
+  );
+};
 
 const StreamPage = () => {
   const [channels, setChannels] = useState([]);
@@ -41,12 +47,15 @@ const StreamPage = () => {
     }
   }, []);
 
-
   return (
     <div className={styles.layout}>
       <Header />
-      <div className={styles.stream}>stream</div>
-      <div className={styles.listOfChannels}>list of channels</div>
+      <div className={styles.stream}>
+        <MainStream />
+      </div>
+      <div className={styles.listOfChannels}>
+        <ListOfChannels />
+      </div>
     </div>
   );
 };
