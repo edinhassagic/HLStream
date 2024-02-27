@@ -29,6 +29,7 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
       className={styles.channel_container}
       disabled={available}
       key={id}
+    style={{cursor: available ? "pointer" : "not-allowed"}}
       onClick={() => {
         if (available) {
           onSelectChannel(id);
