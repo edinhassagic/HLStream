@@ -40,7 +40,7 @@ export const getContent = async () => {
 export const getContentById = async (id) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`https://localhost:4000/channels/:${id}`, {
+    const response = await axios.get(`http://localhost:4000/channels/${id}`, {
       headers: {
         "Content-Type": "application/json",
 
