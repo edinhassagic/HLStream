@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {login} from "../api/api"
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [data, setData] = useState()
+  const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await login({username, password})
       setData(response)
+      navigate("/stream")
       console.log(response)
     } catch (error) {
       setError('Invalid username or password');
