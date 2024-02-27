@@ -18,6 +18,10 @@
   font-weight: bold;
 }
 
+.videolist {
+    display: flex;
+    flex-direction: row;
+}
 .header .logout_btn {
   background-color: goldenrod;
   font-weight: bold;
@@ -36,6 +40,8 @@
   background-color: white;
 }
 
-.listOfChannels {
-  flex: 1;
+.listOfChannels{
+    flex: 1;
+   
+
 }
