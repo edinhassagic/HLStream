@@ -251,10 +251,10 @@ app.get("/login", (req, res) => {
 
 app.get("/channels", checkAuth, (req, res) => {
   const userId = req.jwt.id;
-
+  console.log(userId)
   const user = users.find((user) => user.id === userId);
 
-  if (!user) return res.status(401).end();
+  if (!user) return res.status(401).json({ message: 'ne postoji user' });;
 
   const userChannels = user.channels;
 
