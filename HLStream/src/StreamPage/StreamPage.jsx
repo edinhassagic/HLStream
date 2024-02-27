@@ -3,7 +3,7 @@ import styles from "./StreamPage.module.css";
 import { getContent, getContentById } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-
+import Pagination from "./Pagination";
 const Header = () => {
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
       className={styles.channel_container}
       disabled={available}
       key={id}
-    style={{cursor: available ? "pointer" : "not-allowed"}}
+      style={{ cursor: available ? "pointer" : "not-allowed" }}
       onClick={() => {
         if (available) {
           onSelectChannel(id);
@@ -54,15 +54,73 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
 };
 
 const ListOfChannels = ({ channels, onSelectChannel }) => {
+  const [channelArray, setChannelArray] = useState(Object.values(channels));
+  console.log(channelArray.length);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(6);
+
+  const [indexOfLastRecord, setIndexOfLastRecord] = useState(
+    currentPage * recordsPerPage
+  );
+  const [indexOfFirstRecord, setIndexOfFirstRecord] = useState(
+    indexOfLastRecord - recordsPerPage
+  );
+
+  const [currentRecords, setCurrentRecords] = useState(
+    channelArray.slice(indexOfFirstRecord, indexOfLastRecord)
+  );
+  const [nPages, setNPages] = useState(
+    Math.ceil(channelArray.length / recordsPerPage)
+  );
+  console.log(nPages);
+
+  const resetPagination = () => {
+    setCurrentPage(1);
+  };
+
+  useEffect(() => {
+    setCurrentRecords([]);
+
+    setCurrentRecords(
+      channelArray.slice(indexOfFirstRecord, indexOfLastRecord)
+    );
+
+    setNPages(Math.ceil(channelArray.length / recordsPerPage));
+  }, [setCurrentPage, indexOfFirstRecord, indexOfLastRecord]);
+
+  useEffect(() => {
+    changeNumbers();
+  }, [currentPage, currentRecords]);
+
+  useEffect(() => {
+    resetPagination();
+  }, []);
+
+  const changeNumbers = async () => {
+    const newIndexOfLastRecord = currentPage * recordsPerPage;
+
+    setIndexOfFirstRecord(newIndexOfLastRecord - recordsPerPage);
+
+    setIndexOfLastRecord(newIndexOfLastRecord);
+  };
+
   return (
     <div className={styles.videolist}>
-      <div style={{ display: "flex", flexWrap: "wrap" , justifyContent: "center" }}>
-        {channels.map((channel) => (
+      <div
+        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      >
+        {currentRecords.map((channel) => (
           <div key={channel.id}>
             <ChannelBox {...channel} onSelectChannel={onSelectChannel} />
           </div>
         ))}
       </div>
+
+      <Pagination
+        nPages={nPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

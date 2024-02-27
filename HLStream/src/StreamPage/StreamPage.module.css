@@ -20,7 +20,7 @@
 
 .videolist {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 .header .logout_btn {
   background-color: goldenrod;
