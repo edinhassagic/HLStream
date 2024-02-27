@@ -1,10 +1,10 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-
+const cors = require('cors');
 const app = express();
 const port = 4000;
 const secret = "123456789";
-
+app.use(cors());
 const channels = [
   {
     id: 1,
@@ -193,6 +193,8 @@ const users = [
     ],
   },
 ];
+
+
 
 const checkAuth = async (req, res, next) => {
   if (!req?.headers?.authorization) return res.status(401).end();
