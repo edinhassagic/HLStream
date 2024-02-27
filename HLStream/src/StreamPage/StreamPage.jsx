@@ -5,16 +5,16 @@ import { getContent, getContentById } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <div className={styles.header}>
       <p className={styles.user}>{localStorage.getItem("user")}</p>
-      <button onClick={handleLogout} className={styles.logout_btn}> LOGOUT </button>
+      <button onClick={handleLogout} className={styles.logout_btn}>LOGOUT</button>
     </div>
   );
 };
@@ -32,30 +32,31 @@ const ChannelBox = ({ id, name, available, img }) => {
     console.log(videoData);
   };
 
-  
-
   return (
     <div
       className={styles.channel_container}
       disabled={available}
       key={id}
       onClick={() => {
-        if (available) { // Provjera je li available true prije izvršavanja funkcije fetchVideoStream
+        if (available) {
+          // Provjera je li available true prije izvršavanja funkcije fetchVideoStream
           fetchVideoStream(id);
         }
       }}
     >
-      <img className={!available ? (styles.img_blured) : ""} src={img} alt={name} style={{ width: "100%" }} />
-      {available ?
-        (
-          <p>{name}</p>
-        ):(
-          <div>
-            <button> DOKUPITE {name} </button>
-          </div>
-        )
-      }
-      
+      <img
+        className={!available ? styles.img_blured : ""}
+        src={img}
+        alt={name}
+        style={{ width: "100%" }}
+      />
+      {available ? (
+        <p>{name}</p>
+      ) : (
+        <div>
+          <button> DOKUPITE {name} </button>
+        </div>
+      )}
     </div>
   );
 };
