@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./StreamPage.module.css";
 import { useState } from "react";
+import { getContent } from "../api/api";
 const Header = () => {
   return (
     <div className={styles.header}>
