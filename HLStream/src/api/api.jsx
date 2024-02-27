@@ -9,9 +9,8 @@ export const login = async ({ username, password }) => {
       },
     });
 
-
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem("user", response.data.user.name)
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", response.data.user.name);
 
     return response.data.user;
   } catch (error) {
@@ -23,11 +22,10 @@ export const login = async ({ username, password }) => {
 export const getContent = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get("http://localhost:4000/channels",  {
+    const response = await axios.get("http://localhost:4000/channels", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-
       },
     });
 
