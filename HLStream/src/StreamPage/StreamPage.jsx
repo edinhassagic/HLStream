@@ -51,7 +51,7 @@ const ChannelBox = ({ id, name, available, img }) => {
           <p>{name}</p>
         ):(
           <div>
-            <button> DOKUPITE </button>
+            <button> DOKUPITE {name} </button>
           </div>
         )
       }
