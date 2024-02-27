@@ -2,11 +2,19 @@ import React, { useEffect } from "react";
 import styles from "./StreamPage.module.css";
 import { useState } from "react";
 import { getContent } from "../api/api";
+import { useNavigate } from 'react-router-dom';
+
 const Header = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    navigate('/')
+  }
+
   return (
     <div className={styles.header}>
       <p className={styles.user}>{localStorage.getItem("user")}</p>
-      <button className={styles.logout_btn}> LOGOUT </button>
+      <button onClick={handleLogout} className={styles.logout_btn}> LOGOUT </button>
     </div>
   );
 };
