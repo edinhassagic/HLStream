@@ -5,14 +5,14 @@ export const login = async ({username, password}) => {
     const response = await axios.get('http://localhost:4000/login', {
       headers: {
         Authorization: `Basic ${btoa(`${username}:${password}`)}`, 
+        "Content-Type": "application/json",
       },
     });
 
-    const  token = response.data.token;
 
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', response.data.token);
 
-    return { token, user }; 
+    return response.data.user; 
   } catch (error) {
     console.error('Error during login:', error);
     throw error; 
