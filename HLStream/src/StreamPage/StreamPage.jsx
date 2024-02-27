@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./StreamPage.module.css";
 import { getContent, getContentById } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import ReactPlayer from 'react-player'
+import ReactPlayer from "react-player";
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -26,7 +27,6 @@ const Header = () => {
 const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
   return (
     <div
-     
       key={id}
       style={{
         border: "1px solid #ccc",
@@ -36,7 +36,6 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
         textAlign: "center",
         cursor: available ? "pointer" : "not-allowed",
         opacity: available ? 1 : 0.5,
-        
       }}
       onClick={() => {
         if (available) {
@@ -66,12 +65,16 @@ const ListOfChannels = ({ channels, onSelectChannel }) => {
 
 const MainStream = ({ channelUrl }) => {
   return (
-    <div >
+    <div>
       {channelUrl && (
         <>
           <p>Main Stream</p>
-          
-          <ReactPlayer width="100%" playing={true} controls={true}  url={channelUrl} />
+          <ReactPlayer
+            width="100%"
+            playing={true}
+            controls={true}
+            url={channelUrl}
+          />
         </>
       )}
     </div>
@@ -87,6 +90,10 @@ const StreamPage = () => {
       const fetchData = async () => {
         try {
           const response = await getContent();
+          const firstAvailableVideo = response.find(video => video.available);
+          if (firstAvailableVideo) {
+            fetchVideoStream(firstAvailableVideo.id);
+          }
           setChannels(response);
         } catch (error) {
           console.error("Error fetching data:", error.message);
