@@ -51,11 +51,8 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
       )}
     </div>
   );
-};
-
-const ListOfChannels = ({ channels, onSelectChannel }) => {
-  const [channelArray, setChannelArray] = useState(Object.values(channels));
-  console.log(channelArray.length);
+};const ListOfChannels = ({ channels, onSelectChannel }) => {
+  const [channelArray, setChannelArray] = useState(channels);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(6);
 
@@ -72,14 +69,17 @@ const ListOfChannels = ({ channels, onSelectChannel }) => {
   const [nPages, setNPages] = useState(
     Math.ceil(channelArray.length / recordsPerPage)
   );
-  console.log(nPages);
 
   const resetPagination = () => {
     setCurrentPage(1);
   };
-
+  useEffect(()=>{
+    resetPagination()
+   setCurrentRecords( channelArray.slice(indexOfFirstRecord, indexOfLastRecord))
+    console.log(currentRecords)}
+  
+  ,[])
   useEffect(() => {
-    setCurrentRecords([]);
 
     setCurrentRecords(
       channelArray.slice(indexOfFirstRecord, indexOfLastRecord)
@@ -92,9 +92,7 @@ const ListOfChannels = ({ channels, onSelectChannel }) => {
     changeNumbers();
   }, [currentPage, currentRecords]);
 
-  useEffect(() => {
-    resetPagination();
-  }, []);
+
 
   const changeNumbers = async () => {
     const newIndexOfLastRecord = currentPage * recordsPerPage;
@@ -124,7 +122,6 @@ const ListOfChannels = ({ channels, onSelectChannel }) => {
     </div>
   );
 };
-
 const MainStream = ({ channelUrl }) => {
   return (
     <div>
@@ -183,10 +180,10 @@ const StreamPage = () => {
         <MainStream channelUrl={selectedChannelUrl} />
       </div>
       <div className={styles.listOfChannels}>
-        <ListOfChannels
+        { channels.length > 0 && <ListOfChannels
           channels={channels}
           onSelectChannel={fetchVideoStream}
-        />
+        />}
       </div>
     </div>
   );
