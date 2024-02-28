@@ -122,12 +122,12 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
     </div>
   );
 };
-const MainStream = ({ channelUrl }) => {
+const MainStream = ({ channelUrl, name }) => {
   return (
     <div>
       {channelUrl && (
         <>
-          <p>Main Stream</p>
+          <p className={styles.channel_name}>{name}</p>
           <ReactPlayer
             width="100%"
             playing={true}
@@ -144,6 +144,7 @@ const MainStream = ({ channelUrl }) => {
 const StreamPage = () => {
   const [channels, setChannels] = useState([]);
   const [selectedChannelUrl, setSelectedChannelUrl] = useState("");
+  const [selectedChannelName, setSelectedChannelName] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -168,6 +169,7 @@ const StreamPage = () => {
     try {
       const response = await getContentById(id);
       setSelectedChannelUrl(response.url);
+      setSelectedChannelName(response.name);
     } catch (error) {
       console.error("Error fetching video stream:", error.message);
     }
@@ -177,7 +179,7 @@ const StreamPage = () => {
     <div className={styles.layout}>
       <Header />
       <div className={styles.stream}>
-        <MainStream channelUrl={selectedChannelUrl} />
+        <MainStream channelUrl={selectedChannelUrl} name={selectedChannelName} />
       </div>
       <div className={styles.listOfChannels}>
         { channels.length > 0 && <ListOfChannels
