@@ -52,7 +52,9 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
 const ListOfChannels = ({ channels, onSelectChannel }) => {
   return (
     <div className={styles.videolist}>
-      <div style={{ display: "flex", flexWrap: "wrap" , justifyContent: "center" }}>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      >
         {channels.map((channel) => (
           <div key={channel.id}>
             <ChannelBox {...channel} onSelectChannel={onSelectChannel} />
@@ -91,7 +93,7 @@ const StreamPage = () => {
       const fetchData = async () => {
         try {
           const response = await getContent();
-          const firstAvailableVideo = response.find(video => video.available);
+          const firstAvailableVideo = response.find((video) => video.available);
           if (firstAvailableVideo) {
             fetchVideoStream(firstAvailableVideo.id);
           }
