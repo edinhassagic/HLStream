@@ -3,7 +3,7 @@ import styles from "./StreamPage.module.css";
 import { getContent, getContentById } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-
+import Pagination from "./Pagination";
 const Header = () => {
   const navigate = useNavigate();
 
@@ -16,9 +16,8 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <p className={styles.user}>{localStorage.getItem("user")}</p>
-      <button className={styles.logout_btn} onClick={handleLogout}>
-        {" "}
-        LOGOUT{" "}
+      <button onClick={handleLogout} className={styles.logout_btn}>
+        LOGOUT
       </button>
     </div>
   );
@@ -27,44 +26,102 @@ const Header = () => {
 const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
   return (
     <div
+      className={styles.channel_container}
+      disabled={available}
       key={id}
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        padding: "10px",
-        margin: "10px",
-        textAlign: "center",
-        cursor: available ? "pointer" : "not-allowed",
-        opacity: available ? 1 : 0.5,
-      }}
+      style={{ cursor: available ? "pointer" : "not-allowed" }}
       onClick={() => {
         if (available) {
           onSelectChannel(id);
         }
       }}
     >
-      <img src={img} alt={name} style={{ width: "100%" }} />
-      <p>{name}</p>
+      <img
+        className={!available ? styles.img_blured : ""}
+        src={img}
+        alt={name}
+        style={{ width: "100%" }}
+      />
+      {available ? (
+        <p>{name}</p>
+      ) : (
+        <div>
+          <button> DOKUPITE {name} </button>
+        </div>
+      )}
     </div>
   );
-};
+};const ListOfChannels = ({ channels, onSelectChannel }) => {
+  const [channelArray, setChannelArray] = useState(channels);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(6);
 
-const ListOfChannels = ({ channels, onSelectChannel }) => {
+  const [indexOfLastRecord, setIndexOfLastRecord] = useState(
+    currentPage * recordsPerPage
+  );
+  const [indexOfFirstRecord, setIndexOfFirstRecord] = useState(
+    indexOfLastRecord - recordsPerPage
+  );
+
+  const [currentRecords, setCurrentRecords] = useState(
+    channelArray.slice(indexOfFirstRecord, indexOfLastRecord)
+  );
+  const [nPages, setNPages] = useState(
+    Math.ceil(channelArray.length / recordsPerPage)
+  );
+
+  const resetPagination = () => {
+    setCurrentPage(1);
+  };
+  useEffect(()=>{
+    resetPagination()
+   setCurrentRecords( channelArray.slice(indexOfFirstRecord, indexOfLastRecord))
+    console.log(currentRecords)}
+  
+  ,[])
+  useEffect(() => {
+
+    setCurrentRecords(
+      channelArray.slice(indexOfFirstRecord, indexOfLastRecord)
+    );
+
+    setNPages(Math.ceil(channelArray.length / recordsPerPage));
+  }, [setCurrentPage, indexOfFirstRecord, indexOfLastRecord]);
+
+  useEffect(() => {
+    changeNumbers();
+  }, [currentPage, currentRecords]);
+
+
+
+  const changeNumbers = async () => {
+    const newIndexOfLastRecord = currentPage * recordsPerPage;
+
+    setIndexOfFirstRecord(newIndexOfLastRecord - recordsPerPage);
+
+    setIndexOfLastRecord(newIndexOfLastRecord);
+  };
+
   return (
     <div className={styles.videolist}>
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
-        {channels.map((channel) => (
+        {currentRecords.map((channel) => (
           <div key={channel.id}>
             <ChannelBox {...channel} onSelectChannel={onSelectChannel} />
           </div>
         ))}
       </div>
+
+      <Pagination
+        nPages={nPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
-
 const MainStream = ({ channelUrl }) => {
   return (
     <div>
@@ -123,10 +180,10 @@ const StreamPage = () => {
         <MainStream channelUrl={selectedChannelUrl} />
       </div>
       <div className={styles.listOfChannels}>
-        <ListOfChannels
+        { channels.length > 0 && <ListOfChannels
           channels={channels}
           onSelectChannel={fetchVideoStream}
-        />
+        />}
       </div>
     </div>
   );

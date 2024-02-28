@@ -19,8 +19,8 @@
 }
 
 .videolist {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: column;
 }
 .header .logout_btn {
   background-color: goldenrod;
@@ -40,8 +40,21 @@
   background-color: white;
 }
 
-.listOfChannels{
-    flex: 1;
-   
+.listOfChannels {
+  flex: 1;
+}
 
+.channel_container {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.img_blured {
+  filter: blur(3px);
 }
