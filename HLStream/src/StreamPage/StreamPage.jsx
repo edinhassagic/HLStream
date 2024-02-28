@@ -56,7 +56,7 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
 const ListOfChannels = ({ channels, onSelectChannel }) => {
   const [channelArray, setChannelArray] = useState(channels);
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(6);
+  const [recordsPerPage, setRecordsPerPage] = useState(3);
 
   const [indexOfLastRecord, setIndexOfLastRecord] = useState(
     currentPage * recordsPerPage
