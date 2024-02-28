@@ -51,7 +51,9 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
       )}
     </div>
   );
-};const ListOfChannels = ({ channels, onSelectChannel }) => {
+};
+
+const ListOfChannels = ({ channels, onSelectChannel }) => {
   const [channelArray, setChannelArray] = useState(channels);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(6);
@@ -70,6 +72,31 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
     Math.ceil(channelArray.length / recordsPerPage)
   );
 
+    
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      setRecordsPerPage(2);
+    } 
+    else if ( window.innerWidth < 980){
+      setRecordsPerPage(3); 
+    } else if ( window.innerWidth < 1250){
+      setRecordsPerPage(4); 
+    } else if ( window.innerWidth < 1450){
+      setRecordsPerPage(5); 
+    } else {
+      setRecordsPerPage(6)
+    }
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
+
+
   const resetPagination = () => {
     setCurrentPage(1);
   };
@@ -86,7 +113,7 @@ const ChannelBox = ({ id, name, available, img, onSelectChannel }) => {
     );
 
     setNPages(Math.ceil(channelArray.length / recordsPerPage));
-  }, [setCurrentPage, indexOfFirstRecord, indexOfLastRecord]);
+  }, [setCurrentPage, indexOfFirstRecord, indexOfLastRecord, recordsPerPage]);
 
   useEffect(() => {
     changeNumbers();
